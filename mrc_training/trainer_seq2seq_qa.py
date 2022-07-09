@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2020 The HuggingFace Team All rights reserved.
+# Copyright 2021 The HuggingFace Team All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,11 @@
 """
 A subclass of `Trainer` specific to Question-Answering tasks
 """
+from typing import Dict, List, Optional
 
-from transformers import Trainer, is_torch_tpu_available
+from torch.utils.data import Dataset
+
+from transformers import Seq2SeqTrainer, is_torch_tpu_available
 from transformers.trainer_utils import PredictionOutput
 
 
@@ -25,13 +28,30 @@ if is_torch_tpu_available(check_device=False):
     import torch_xla.debug.metrics as met
 
 
-class QuestionAnsweringTrainer(Trainer):
+class QuestionAnsweringSeq2SeqTrainer(Seq2SeqTrainer):
     def __init__(self, *args, eval_examples=None, post_process_function=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.eval_examples = eval_examples
         self.post_process_function = post_process_function
 
-    def evaluate(self, eval_dataset=None, eval_examples=None, ignore_keys=None, metric_key_prefix: str = "eval"):
+    # def evaluate(self, eval_dataset=None, eval_examples=None, ignore_keys=None, metric_key_prefix: str = "eval"):
+    def evaluate(
+        self,
+        eval_dataset: Optional[Dataset] = None,
+        eval_examples=None,
+        ignore_keys: Optional[List[str]] = None,
+        metric_key_prefix: str = "eval",
+        **gen_kwargs,
+    ) -> Dict[str, float]:
+        gen_kwargs = gen_kwargs.copy()
+        gen_kwargs["max_length"] = (
+            gen_kwargs["max_length"] if gen_kwargs.get("max_length") is not None else self.args.generation_max_length
+        )
+        gen_kwargs["num_beams"] = (
+            gen_kwargs["num_beams"] if gen_kwargs.get("num_beams") is not None else self.args.generation_num_beams
+        )
+        self._gen_kwargs = gen_kwargs
+
         eval_dataset = self.eval_dataset if eval_dataset is None else eval_dataset
         eval_dataloader = self.get_eval_dataloader(eval_dataset)
         eval_examples = self.eval_examples if eval_examples is None else eval_examples
@@ -53,7 +73,7 @@ class QuestionAnsweringTrainer(Trainer):
             self.compute_metrics = compute_metrics
 
         if self.post_process_function is not None and self.compute_metrics is not None:
-            eval_preds = self.post_process_function(eval_examples, eval_dataset, output.predictions)
+            eval_preds = self.post_process_function(eval_examples, eval_dataset, output)
             metrics = self.compute_metrics(eval_preds)
 
             # Prefix all keys with metric_key_prefix + '_'
@@ -72,7 +92,11 @@ class QuestionAnsweringTrainer(Trainer):
         self.control = self.callback_handler.on_evaluate(self.args, self.state, self.control, metrics)
         return metrics
 
-    def predict(self, predict_dataset, predict_examples, ignore_keys=None, metric_key_prefix: str = "test"):
+    def predict(
+        self, predict_dataset, predict_examples, ignore_keys=None, metric_key_prefix: str = "test", **gen_kwargs
+    ):
+        self._gen_kwargs = gen_kwargs.copy()
+
         predict_dataloader = self.get_test_dataloader(predict_dataset)
 
         # Temporarily disable metric computation, we will do it in the loop here.
