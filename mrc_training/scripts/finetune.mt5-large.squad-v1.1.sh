@@ -34,6 +34,7 @@ do
             --question_column question \
             --answer_column answers \
             --do_train \
+            --save_strategy epoch \
             --warmup_ratio 0.06 \
             --per_device_train_batch_size ${batch_size} \
             --load_best_model_at_end True \
