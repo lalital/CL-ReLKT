@@ -485,16 +485,16 @@ def main():
 
         # Since one example might give us several features if it has a long context, we need a map from a feature to
         # its corresponding example. This key gives us just that.
-        sample_mapping = model_inputs#.pop("overflow_to_sample_mapping")
+        # sample_mapping = model_inputs#.pop("overflow_to_sample_mapping")
 
         # For evaluation, we will need to convert our predictions to substrings of the context, so we keep the
         # corresponding example_id and we will store the offset mappings.
-        model_inputs["example_id"] = []
+        # model_inputs["example_id"] = []
 
-        for i in range(len(model_inputs["input_ids"])):
-            # One example can give several spans, this is the index of the example containing this span of text.
-            sample_index = sample_mapping[i]
-            model_inputs["example_id"].append(examples["id"][sample_index])
+        # for i in range(len(model_inputs["input_ids"])):
+        #     # One example can give several spans, this is the index of the example containing this span of text.
+        #     sample_index = sample_mapping[i]
+        #     model_inputs["example_id"].append(examples["id"][sample_index])
 
         # If we are padding here, replace all tokenizer.pad_token_id in the labels by -100 when we want to ignore
         # padding in the loss.
