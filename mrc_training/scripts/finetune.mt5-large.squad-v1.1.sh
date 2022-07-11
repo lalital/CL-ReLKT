@@ -35,7 +35,6 @@ do
             --answer_column answers \
             --do_train \
             --do_eval \
-            --do_predict \
             --evaluation_strategy epoch \
             --save_strategy epoch \
             --warmup_ratio 0.06 \
