@@ -34,6 +34,10 @@ do
             --question_column question \
             --answer_column answers \
             --do_train \
+            --do_eval \
+            --do_predict \
+            --overwrite_cache \
+            --eval_strategy epoch \
             --save_strategy epoch \
             --warmup_ratio 0.06 \
             --per_device_train_batch_size ${batch_size} \
@@ -42,7 +46,7 @@ do
             --fp16 True \
             --learning_rate ${learning_rate} \
             --num_train_epochs ${epoch} \
-            --max_seq_length 512 \
+            --max_seq_length 510 \
             --doc_stride 128 \
             --output_dir ./checkpoints/${run_name} \
             --logging_dir ./logs/${run_name} |& tee -a ./logs/${run_name}/trainer.log
