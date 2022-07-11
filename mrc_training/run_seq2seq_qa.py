@@ -476,7 +476,7 @@ def main():
             max_length=max_seq_length,
             padding=padding,
             truncation=True,
-            return_overflowing_tokens=True,
+            # return_overflowing_tokens=True,
             return_offsets_mapping=True,
         )
         # Setup the tokenizer for targets
