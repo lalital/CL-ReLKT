@@ -37,7 +37,7 @@ do
             --do_eval \
             --do_predict \
             --overwrite_cache \
-            --eval_strategy epoch \
+            --evaluation_strategy epoch \
             --save_strategy epoch \
             --warmup_ratio 0.06 \
             --per_device_train_batch_size ${batch_size} \
