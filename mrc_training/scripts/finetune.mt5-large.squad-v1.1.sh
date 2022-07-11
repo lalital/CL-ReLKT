@@ -36,6 +36,9 @@ do
             --do_train \
             --warmup_ratio 0.06 \
             --per_device_train_batch_size ${batch_size} \
+            --load_best_model_at_end True \
+            --save_total_limit 1 \
+            --fp16 True \
             --learning_rate ${learning_rate} \
             --num_train_epochs ${epoch} \
             --max_seq_length 512 \
