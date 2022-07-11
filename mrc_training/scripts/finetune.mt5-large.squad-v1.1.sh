@@ -24,9 +24,9 @@ do
             echo "learning_rate: ${learning_rate}"
             echo "epoch: ${epoch}"
 
-            run_name="exp001.t5-large.seq2seq.squad_hparams.bz-${batch_size}.lr-${batclearning_rateh_size}.ep-${epoch}"
+            run_name="exp001.t5-large.seq2seq.squad_hparams.bz-${batch_size}.lr-${learning_rate}.ep-${epoch}"
             echo " Run name: ${run_name}"
-
+            mkdir -p ./logs/${run_name}/
             CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
             --model_name_or_path ./models/mt5-large \
             --dataset_name squad \
