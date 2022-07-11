@@ -36,7 +36,6 @@ do
             --do_train \
             --do_eval \
             --do_predict \
-            --overwrite_cache \
             --evaluation_strategy epoch \
             --save_strategy epoch \
             --warmup_ratio 0.06 \
@@ -46,8 +45,10 @@ do
             --fp16 True \
             --learning_rate ${learning_rate} \
             --num_train_epochs ${epoch} \
-            --max_seq_length 510 \
+            --max_seq_length 512 \
             --doc_stride 128 \
+            --max_answer_length 50 \
+            --generation_max_length 50 \
             --output_dir ./checkpoints/${run_name} \
             --logging_dir ./logs/${run_name} |& tee -a ./logs/${run_name}/trainer.log
         done
