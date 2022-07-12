@@ -11,7 +11,7 @@ export WANDB_MODE=offline
 
 
 # BATCH_SIZES=(8)
-# LEARNING_RATES=(3e-5 1.5e-5 1e-5)
+# LEARNING_RATES=(1.5e-5 1e-5)
 EPOCHS=(1 2 3 4 5)
 batch_size=${1}
 learning_rate=${2}
@@ -41,6 +41,7 @@ do
     --save_strategy epoch \
     --warmup_ratio 0.06 \
     --per_device_train_batch_size ${batch_size} \
+    --per_device_eval_batch_size 1 \
     --load_best_model_at_end True \
     --save_total_limit 1 \
     --fp16 True \
