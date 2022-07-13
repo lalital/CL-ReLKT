@@ -13,25 +13,29 @@ export WANDB_MODE=offline
 # BATCH_SIZES=(8)
 # LEARNING_RATES=(1.5e-5 1e-5)
 
-batch_size=${1}
-gradient_accumulation_steps=${2}
-learning_rate=${3}
-max_steps=${4}
-save_steps=${5}
-eval_steps=${6}
+per_device_train_batch_size=${1}
+per_device_eval_batch_size=${2}
+gradient_accumulation_steps=${3}
+learning_rate=${4}
+max_steps=${5}
+save_steps=${6}
+eval_steps=${7}
+run_name_prefix=${8}
 # gradient_accumulation_steps = 1 , bz = 16
 # gradient_accumulation_steps = 8 , bz = 128
 
 echo "batch_size:${batch_size}"
+
 echo "learning_rate: ${learning_rate}"
 echo "max_steps: ${max_steps}"
 echo "save_steps: ${save_steps}"
 echo "eval_steps: ${eval_steps}"
 
-run_name="exp001.t5-large.seq2seq.squad_hparams.bz-${batch_size}.grad_acc-${gradient_accumulation_steps}.lr-${learning_rate}.max_steps-${max_steps}"
+run_name="${run_name_prefix}.t5-large.seq2seq.squad_hparams.bz-${per_device_train_batch_size}.grad_acc-${gradient_accumulation_steps}.lr-${learning_rate}.max_steps-${max_steps}"
 echo " Run name: ${run_name}"
 mkdir -p ./logs/${run_name}/
-CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
+
+python3 run_seq2seq_qa.py \
 --model_name_or_path ./models/mt5-large \
 --dataset_name squad \
 --context_column context \
@@ -55,6 +59,8 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --doc_stride 128 \
 --max_answer_length 30 \
 --generation_max_length 30 \
+--generation_num_beams 1 \
+--run_name ${run_name} \
 --output_dir ./checkpoints/${run_name} \
 --report_to wandb \
 --logging_dir ./logs/${run_name} |& tee -a ./logs/${run_name}/trainer.log

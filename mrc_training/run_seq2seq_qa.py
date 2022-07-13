@@ -51,7 +51,8 @@ from transformers.optimization import Adafactor, AdafactorSchedule
 require_version("datasets>=1.8.0", "To fix: pip install -r examples/pytorch/question-answering/requirements.txt")
 
 logger = logging.getLogger(__name__)
-
+def is_main_process(rank):
+    return rank in [-1, 0]
 
 @dataclass
 class ModelArguments:
@@ -277,12 +278,17 @@ def main():
     # information sent is the one passed as arguments along with your Python/PyTorch versions.
     send_example_telemetry("run_seq2seq_qa", model_args, data_args)
 
-    # Setup logging
     logging.basicConfig(
-        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
-        datefmt="%m/%d/%Y %H:%M:%S",
-        handlers=[logging.StreamHandler(sys.stdout)],
+        format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
+        datefmt="%d/%m/%Y %H:%M:%S",
+        level=logging.INFO if is_main_process(training_args.local_rank) else logging.WARN,
     )
+    # Setup logging
+    # logging.basicConfig(
+    #     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    #     datefmt="%m/%d/%Y %H:%M:%S",
+    #     handlers=[logging.StreamHandler(sys.stdout)],
+    # )
 
     log_level = training_args.get_process_log_level()
     logger.setLevel(log_level)
