@@ -39,7 +39,7 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --answer_column answers \
 --do_train \
 --logging_steps 10 \
---evaluation_strategy none \
+--evaluation_strategy no \
 --save_strategy steps \
 --save_steps ${save_steps} \
 --per_device_train_batch_size ${batch_size} \
