@@ -51,8 +51,8 @@ python3 run_seq2seq_qa.py \
 --evaluation_strategy no \
 --save_strategy steps \
 --save_steps ${save_steps} \
---per_device_train_batch_size ${batch_size} \
---per_device_eval_batch_size 1 \
+--per_device_train_batch_size ${per_device_train_batch_size} \
+--per_device_eval_batch_size ${per_device_eval_batch_size} \
 --gradient_accumulation_steps ${gradient_accumulation_steps} \
 --learning_rate ${learning_rate} \
 --lr_scheduler_type constant \
