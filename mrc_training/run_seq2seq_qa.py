@@ -623,7 +623,7 @@ def main():
     optimizer = Adafactor(model.parameters(),
                     scale_parameter=False,
                     relative_step=False,
-                    warmup_init=True,
+                    warmup_init=False,
                     lr=training_args.learning_rate)
     lr_scheduler = AdafactorSchedule(optimizer)
     
