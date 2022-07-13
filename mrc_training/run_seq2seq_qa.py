@@ -41,6 +41,7 @@ from transformers import (
 from transformers.trainer_utils import EvalLoopOutput, EvalPrediction, get_last_checkpoint
 from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
+from transformers.optimization import Adafactor, AdafactorSchedule
 
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
@@ -619,9 +620,17 @@ def main():
         references = [{"id": ex["id"], "answers": ex[answer_column]} for ex in examples]
         return EvalPrediction(predictions=formatted_predictions, label_ids=references)
 
+    optimizer = Adafactor(model.parameters(),
+                    scale_parameter=False,
+                    relative_step=False,
+                    warmup_init=True,
+                    lr=training_args.learning_rate)
+    lr_scheduler = AdafactorSchedule(optimizer)
+    
     # Initialize our Trainer
     trainer = QuestionAnsweringSeq2SeqTrainer(
         model=model,
+        imizers=(optimizer, lr_scheduler)
         args=training_args,
         train_dataset=train_dataset if training_args.do_train else None,
         eval_dataset=eval_dataset if training_args.do_eval else None,
