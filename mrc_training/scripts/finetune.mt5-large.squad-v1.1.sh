@@ -13,12 +13,12 @@ export WANDB_MODE=offline
 # BATCH_SIZES=(8)
 # LEARNING_RATES=(1.5e-5 1e-5)
 
-batch_size=16
-gradient_accumulation_steps=${1}
-learning_rate=${2}
-max_steps=${3}
-save_steps=${4}
-eval_steps=${5}
+batch_size=${1}
+gradient_accumulation_steps=${2}
+learning_rate=${3}
+max_steps=${4}
+save_steps=${5}
+eval_steps=${6}
 # gradient_accumulation_steps = 1 , bz = 16
 # gradient_accumulation_steps = 8 , bz = 128
 
