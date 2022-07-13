@@ -627,6 +627,7 @@ def main():
                     lr=training_args.learning_rate)
     lr_scheduler = AdafactorSchedule(optimizer)
     
+    print(f'\nDEBUG: train_dataset[0]: {train_dataset[0]}\n')
     # Initialize our Trainer
     trainer = QuestionAnsweringSeq2SeqTrainer(
         model=model,
