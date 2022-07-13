@@ -37,6 +37,7 @@ from transformers import (
     HfArgumentParser,
     Seq2SeqTrainingArguments,
     set_seed,
+    get_scheduler
 )
 from transformers.trainer_utils import EvalLoopOutput, EvalPrediction, get_last_checkpoint
 from transformers.utils import check_min_version, send_example_telemetry
@@ -625,7 +626,11 @@ def main():
                     relative_step=False,
                     warmup_init=False,
                     lr=0.001)
-    lr_scheduler = AdafactorSchedule(optimizer)
+
+    lr_scheduler = get_scheduler(name=training_args.lr_scheduler_type,
+                                 optimizer=optimizer,
+                                 num_warmup_steps=0,
+                                 num_training_steps=training_args.max_steps)
     
     print(f'\nDEBUG: train_dataset[0]: {train_dataset[0]}\n')
     # Initialize our Trainer
