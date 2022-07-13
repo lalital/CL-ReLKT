@@ -17,12 +17,14 @@ batch_size=16
 gradient_accumulation_steps=${1}
 learning_rate=${2}
 max_steps=${3}
+save_steps=${4}
 # gradient_accumulation_steps = 1 , bz = 16
 # gradient_accumulation_steps = 8 , bz = 128
 
 echo "batch_size: 16"
 echo "learning_rate: ${learning_rate}"
 echo "max_steps: ${max_steps}"
+echo "save_steps: ${save_steps}"
 
 run_name="exp001.t5-large.seq2seq.squad_hparams.bz-${batch_size}.grad_acc-${gradient_accumulation_steps}.lr-${learning_rate}.max_steps-${max_steps}"
 echo " Run name: ${run_name}"
@@ -36,7 +38,7 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --do_train \
 --evaluation_strategy steps \
 --save_strategy steps \
---save_steps 5000 \
+--save_steps ${save_steps} \
 --per_device_train_batch_size 16 \
 --per_device_eval_batch_size 1 \
 --gradient_accumulation_steps ${gradient_accumulation_steps} \
