@@ -38,14 +38,13 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --question_column question \
 --answer_column answers \
 --do_train \
---evaluation_strategy steps \
+--logging_steps 10 \
+--evaluation_strategy none \
 --save_strategy steps \
 --save_steps ${save_steps} \
---eval_steps ${eval_steps} \
 --per_device_train_batch_size 16 \
 --per_device_eval_batch_size 1 \
 --gradient_accumulation_steps ${gradient_accumulation_steps} \
---load_best_model_at_end True \
 --fp16 True \
 --learning_rate ${learning_rate} \
 --max_steps ${max_steps} \
