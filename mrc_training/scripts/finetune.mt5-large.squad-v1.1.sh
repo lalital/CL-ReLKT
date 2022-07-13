@@ -55,4 +55,5 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --max_answer_length 30 \
 --generation_max_length 30 \
 --output_dir ./checkpoints/${run_name} \
+--report_to tensorboard \
 --logging_dir ./logs/${run_name} |& tee -a ./logs/${run_name}/trainer.log
