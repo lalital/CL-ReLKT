@@ -13,16 +13,16 @@ export WANDB_MODE=offline
 # BATCH_SIZES=(8)
 # LEARNING_RATES=(1.5e-5 1e-5)
 
-batch_size=8
+batch_size=16
 gradient_accumulation_steps=${1}
 learning_rate=${2}
 max_steps=${3}
 save_steps=${4}
 eval_steps=${5}
-# gradient_accumulation_steps = 2 , bz = 16
-# gradient_accumulation_steps = 16 , bz = 128
+# gradient_accumulation_steps = 1 , bz = 16
+# gradient_accumulation_steps = 8 , bz = 128
 
-echo "batch_size: 8"
+echo "batch_size:${batch_size}"
 echo "learning_rate: ${learning_rate}"
 echo "max_steps: ${max_steps}"
 echo "save_steps: ${save_steps}"
@@ -42,7 +42,7 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --evaluation_strategy none \
 --save_strategy steps \
 --save_steps ${save_steps} \
---per_device_train_batch_size 16 \
+--per_device_train_batch_size ${batch_size} \
 --per_device_eval_batch_size 1 \
 --gradient_accumulation_steps ${gradient_accumulation_steps} \
 --fp16 True \
