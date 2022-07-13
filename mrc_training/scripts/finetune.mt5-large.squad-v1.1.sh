@@ -48,7 +48,7 @@ python3 run_seq2seq_qa.py \
 --logging_steps 10 \
 --logging_strategy steps \
 --logging_first_step \
---evaluation_strategy no \
+--evaluation_strategy steps \
 --save_strategy steps \
 --save_steps ${save_steps} \
 --per_device_train_batch_size ${per_device_train_batch_size} \
