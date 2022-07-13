@@ -55,5 +55,3 @@ do
     --output_dir ./checkpoints/${run_name} \
     --logging_dir ./logs/${run_name} |& tee -a ./logs/${run_name}/trainer.log
 done
-#     done 
-# done
