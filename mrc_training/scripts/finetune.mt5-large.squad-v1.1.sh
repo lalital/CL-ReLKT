@@ -38,7 +38,7 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --question_column question \
 --answer_column answers \
 --do_train \
---logging_steps 10 \
+--logging_steps 16 \
 --logging_strategy steps \
 --logging_first_step \
 --evaluation_strategy no \
@@ -47,7 +47,6 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --per_device_train_batch_size ${batch_size} \
 --per_device_eval_batch_size 1 \
 --gradient_accumulation_steps ${gradient_accumulation_steps} \
---fp16 True \
 --learning_rate ${learning_rate} \
 --lr_scheduler_type constant \
 --optim adafactor \
@@ -57,5 +56,5 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --max_answer_length 30 \
 --generation_max_length 30 \
 --output_dir ./checkpoints/${run_name} \
---report_to tensorboard \
+--report_to wandb \
 --logging_dir ./logs/${run_name} |& tee -a ./logs/${run_name}/trainer.log
