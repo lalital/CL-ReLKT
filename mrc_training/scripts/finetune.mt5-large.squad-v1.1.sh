@@ -42,13 +42,11 @@ python3 run_seq2seq_qa.py \
 --question_column question \
 --answer_column answers \
 --do_train \
---do_eval \
---load_best_model_at_end \
---save_total_limit 5 \
+--save_total_limit 50 \
 --logging_steps 10 \
 --logging_strategy steps \
 --logging_first_step \
---evaluation_strategy steps \
+--evaluation_strategy no \
 --save_strategy steps \
 --save_steps ${save_steps} \
 --per_device_train_batch_size ${per_device_train_batch_size} \
