@@ -39,6 +39,8 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --answer_column answers \
 --do_train \
 --logging_steps 10 \
+--logging_strategy steps \
+--logging_first_step \
 --evaluation_strategy no \
 --save_strategy steps \
 --save_steps ${save_steps} \
