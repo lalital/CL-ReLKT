@@ -42,6 +42,7 @@ python3 run_seq2seq_qa.py \
 --question_column question \
 --answer_column answers \
 --do_train \
+--do_eval \
 --logging_steps 10 \
 --logging_strategy steps \
 --logging_first_step \
