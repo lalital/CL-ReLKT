@@ -624,7 +624,7 @@ def main():
                     scale_parameter=False,
                     relative_step=False,
                     warmup_init=False,
-                    lr=training_args.learning_rate)
+                    lr=0.001)
     lr_scheduler = AdafactorSchedule(optimizer)
     
     print(f'\nDEBUG: train_dataset[0]: {train_dataset[0]}\n')
