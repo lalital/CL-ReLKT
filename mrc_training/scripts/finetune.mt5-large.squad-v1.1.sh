@@ -50,7 +50,7 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --lr_scheduler_type constant \
 --optim adafactor \
 --max_steps ${max_steps} \
---max_seq_length 512 \
+--max_seq_length 384 \
 --doc_stride 128 \
 --max_answer_length 30 \
 --generation_max_length 30 \
