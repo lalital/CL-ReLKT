@@ -47,7 +47,7 @@ CUDA_VISIBLE_DEVICES=0 python3 run_seq2seq_qa.py \
 --gradient_accumulation_steps ${gradient_accumulation_steps} \
 --fp16 True \
 --learning_rate ${learning_rate} \
---lr_scheduler_type constant
+--lr_scheduler_type constant \
 --optim adafactor \
 --max_grad_norm None \
 --max_steps ${max_steps} \
