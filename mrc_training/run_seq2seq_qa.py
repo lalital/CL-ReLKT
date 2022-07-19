@@ -23,7 +23,7 @@ import os
 import sys
 from dataclasses import dataclass, field
 from typing import List, Optional, Tuple
-
+import torch
 import datasets
 from datasets import load_dataset, load_metric
 
@@ -473,6 +473,8 @@ def main():
             ]
 
         model_inputs["labels"] = labels["input_ids"]
+        model_inputs['decoder_attention_mask'] = torch.stack([example['target_attention_mask'] for example in labels])
+
         return model_inputs
 
     # Validation preprocessing
