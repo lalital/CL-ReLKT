@@ -633,7 +633,7 @@ def main():
                     scale_parameter=False,
                     relative_step=False,
                     warmup_init=False,
-                    lr=0.001)
+                    lr=training_args.learning_rate)
 
     lr_scheduler = get_scheduler(name=training_args.lr_scheduler_type,
                                  optimizer=optimizer,
