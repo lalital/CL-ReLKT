@@ -473,7 +473,7 @@ def main():
             ]
 
         model_inputs["labels"] = labels["input_ids"]
-        model_inputs['decoder_attention_mask'] = torch.stack([example['target_attention_mask'] for example in labels])
+        model_inputs['decoder_attention_mask'] = labels['attention_mask']
 
         return model_inputs
 
