@@ -63,7 +63,6 @@ python3 run_seq2seq_qa.py \
 --max_answer_length 30 \
 --generation_max_length 30 \
 --generation_num_beams 1 \
---prediction_loss_only True \
 --run_name ${run_name} \
 --output_dir ./checkpoints/${run_name} \
 --report_to wandb \
