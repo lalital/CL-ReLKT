@@ -54,6 +54,7 @@ python3 run_seq2seq_qa.py \
 --per_device_train_batch_size ${per_device_train_batch_size} \
 --per_device_eval_batch_size ${per_device_eval_batch_size} \
 --gradient_accumulation_steps ${gradient_accumulation_steps} \
+--eval_accumulation_steps 32 \
 --learning_rate ${learning_rate} \
 --lr_scheduler_type constant \
 --optim adafactor \
