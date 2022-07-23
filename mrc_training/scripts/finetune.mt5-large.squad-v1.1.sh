@@ -43,7 +43,7 @@ python3 run_seq2seq_qa.py \
 --answer_column answers \
 --do_train \
 --do_eval \
---save_total_limit 50 \
+--save_total_limit 10 \
 --logging_steps 10 \
 --logging_strategy steps \
 --logging_first_step \
