@@ -487,7 +487,7 @@ def main():
             padding=padding,
             truncation=True,
             # return_overflowing_tokens=True,
-            return_offsets_mapping=True,
+            # return_offsets_mapping=True,
         )
         # Setup the tokenizer for targets
         with tokenizer.as_target_tokenizer():
