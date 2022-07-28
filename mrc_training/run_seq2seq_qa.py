@@ -663,7 +663,7 @@ def main():
         elif last_checkpoint is not None:
             checkpoint = last_checkpoint
         # test first step eval
-        eval_result = trainer.evaluate()
+        # eval_result = trainer.evaluate()
         
         train_result = trainer.train(resume_from_checkpoint=checkpoint)
         trainer.save_model()  # Saves the tokenizer too for easy upload
