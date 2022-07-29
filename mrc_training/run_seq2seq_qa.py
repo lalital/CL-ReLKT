@@ -629,11 +629,29 @@ def main():
         references = [{"id": ex["id"], "answers": ex[answer_column]} for ex in examples]
         return EvalPrediction(predictions=formatted_predictions, label_ids=references)
 
-    # optimizer = Adafactor(model.parameters(),
-    #                 scale_parameter=False,
-    #                 relative_step=False,
-    #                 warmup_init=False,
-    #                 lr=training_args.learning_rate)
+    # Refs: https://discuss.huggingface.co/t/t5-finetuning-tips/684/12
+    #     Parameters for AdafactorOptimizer:
+    # ==============================================================================
+    # AdafactorOptimizer.beta1 = 0.0
+    # AdafactorOptimizer.clipping_threshold = 1.0
+    # AdafactorOptimizer.decay_rate = None
+    # AdafactorOptimizer.epsilon1 = 1e-30
+    # AdafactorOptimizer.epsilon2 = 0.001
+    # AdafactorOptimizer.factored = True
+    # AdafactorOptimizer.min_dim_size_to_factor = 128
+    # AdafactorOptimizer.multiply_by_parameter_scale = True
+    # optimizer = Adafactor(
+    #     model.parameters(),
+    #     lr=training_args.learning_rate,
+    #     eps=(1e-30, 1e-3),
+    #     clip_threshold=1.0,
+    #     decay_rate=None,
+    #     beta1=0.0,
+    #     weight_decay=0.0,
+    #     relative_step=False,
+    #     scale_parameter=False,
+    #     warmup_init=False,
+    # )
 
     # lr_scheduler = get_scheduler(name=training_args.lr_scheduler_type,
     #                              optimizer=optimizer,
