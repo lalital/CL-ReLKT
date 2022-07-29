@@ -640,29 +640,29 @@ def main():
     # AdafactorOptimizer.factored = True
     # AdafactorOptimizer.min_dim_size_to_factor = 128
     # AdafactorOptimizer.multiply_by_parameter_scale = True
-    # optimizer = Adafactor(
-    #     model.parameters(),
-    #     lr=training_args.learning_rate,
-    #     eps=(1e-30, 1e-3),
-    #     clip_threshold=1.0,
-    #     decay_rate=None,
-    #     beta1=0.0,
-    #     weight_decay=0.0,
-    #     relative_step=False,
-    #     scale_parameter=False,
-    #     warmup_init=False,
-    # )
+    optimizer = Adafactor(
+        model.parameters(),
+        lr=training_args.learning_rate,
+        eps=(1e-30, 1e-3),
+        clip_threshold=1.0,
+        decay_rate=None,
+        beta1=0.0,
+        weight_decay=0.0,
+        relative_step=False,
+        scale_parameter=False,
+        warmup_init=False,
+    )
 
-    # lr_scheduler = get_scheduler(name=training_args.lr_scheduler_type,
-    #                              optimizer=optimizer,
-    #                              num_warmup_steps=0,
-    #                              num_training_steps=training_args.max_steps)
+    lr_scheduler = get_scheduler(name=training_args.lr_scheduler_type,
+                                 optimizer=optimizer,
+                                 num_warmup_steps=0,
+                                 num_training_steps=training_args.max_steps)
     
     print(f'\nDEBUG: train_dataset[0]: {train_dataset[0]}\n')
     # Initialize our Trainer
     trainer = QuestionAnsweringSeq2SeqTrainer(
         model=model,
-        # optimizers=(optimizer, lr_scheduler),
+        optimizers=(optimizer, lr_scheduler),
         args=training_args,
         train_dataset=train_dataset if training_args.do_train else None,
         eval_dataset=eval_dataset if training_args.do_eval else None,
