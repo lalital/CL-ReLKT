@@ -629,22 +629,22 @@ def main():
         references = [{"id": ex["id"], "answers": ex[answer_column]} for ex in examples]
         return EvalPrediction(predictions=formatted_predictions, label_ids=references)
 
-    optimizer = Adafactor(model.parameters(),
-                    scale_parameter=False,
-                    relative_step=False,
-                    warmup_init=False,
-                    lr=training_args.learning_rate)
+    # optimizer = Adafactor(model.parameters(),
+    #                 scale_parameter=False,
+    #                 relative_step=False,
+    #                 warmup_init=False,
+    #                 lr=training_args.learning_rate)
 
-    lr_scheduler = get_scheduler(name=training_args.lr_scheduler_type,
-                                 optimizer=optimizer,
-                                 num_warmup_steps=0,
-                                 num_training_steps=training_args.max_steps)
+    # lr_scheduler = get_scheduler(name=training_args.lr_scheduler_type,
+    #                              optimizer=optimizer,
+    #                              num_warmup_steps=0,
+    #                              num_training_steps=training_args.max_steps)
     
     print(f'\nDEBUG: train_dataset[0]: {train_dataset[0]}\n')
     # Initialize our Trainer
     trainer = QuestionAnsweringSeq2SeqTrainer(
         model=model,
-        optimizers=(optimizer, lr_scheduler),
+        # optimizers=(optimizer, lr_scheduler),
         args=training_args,
         train_dataset=train_dataset if training_args.do_train else None,
         eval_dataset=eval_dataset if training_args.do_eval else None,
