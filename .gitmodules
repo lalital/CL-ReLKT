@@ -1,0 +1,3 @@
+[submodule "mrc_training/transformers"]
+	path = mrc_training/transformers
+	url = https://github.com/huggingface/transformers.git
