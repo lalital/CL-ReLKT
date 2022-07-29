@@ -63,17 +63,18 @@ def mine_prompt_gt(args):
 
     acc_len = 0
     selected_sentence = '<NA>'
+    selected_sentence_idx = -1
     for i, sentence_candidate in enumerate(sentences):
         if answer_start >= acc_len and answer_start <=acc_len + len(sentence_candidate):
             selected_sentence = sentence_candidate
-            
+            selected_sentence_idx = i
         acc_len+=len(sentence_candidate)
 
     prompt_template = 'Question: {} Answer: {}'
     
     prompt = prompt_template.format(question.strip(), selected_sentence)
 
-    return selected_sentence
+    return selected_sentence, selected_sentence_idx
 
 def load_model(directory: str):
     model = hub.load(directory)
