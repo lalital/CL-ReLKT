@@ -57,7 +57,7 @@ def add_eos_to_examples(example):
     return result
 
 
-def convert_to_features(example, tokenizer: transformers.PretrainedTokenizerBase = TOKENIZER):
+def convert_to_features(example, tokenizer = TOKENIZER):
     
     assert tokenizer is not None
 
