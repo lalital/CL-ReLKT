@@ -146,7 +146,7 @@ def main(args):
         squad_en_val_processed = list(squad_en_processed['validation'].values())
         _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
         features = list(map(_convert_to_features, map(add_eos_to_examples, squad_en_val_processed)))
-        references = [item['answers'] for item in features]
+        references = [item['answers'] for item in squad_en_val_processed]
     elif test_dataset_type == 'xsquad':
         xquad_test_dataset = squad_xx['test']
         _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
