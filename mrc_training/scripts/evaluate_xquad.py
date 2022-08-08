@@ -147,7 +147,7 @@ def main(args):
         _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
         features = list(map(_convert_to_features, map(add_eos_to_examples, squad_en_val_processed)))
         references = [item['answers'] for item in squad_en_val_processed]
-    elif test_dataset_type == 'xsquad':
+    elif test_dataset_type == 'xquad':
         xquad_test_dataset = squad_xx['test']
         _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
         features = list(map(_convert_to_features, map(add_eos_to_examples, xquad_test_dataset)))
