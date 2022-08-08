@@ -155,7 +155,7 @@ def main(args):
     else:
         raise ValueError('The value of `test_dataset_type` should be either `squad` or `xquad`.')
 
-    finetuned_model_dir = args,finetuned_model_dir
+    finetuned_model_dir = args.finetuned_model_dir
     each_ckp_finetuned_model_dirs = glob.glob(os.path.join(finetuned_model_dir, 'checkpoint-*'))
     assert len(each_ckp_finetuned_model_dirs) >= 1
     
