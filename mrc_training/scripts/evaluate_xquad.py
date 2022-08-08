@@ -230,7 +230,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('finetuned_model_dir', type=str)
     parser.add_argument('--data_dir', type=str, default='./data/xquad')
-    parser.add_argument('--test_dataset_Type', type=str, default='squad')
+    parser.add_argument('--test_dataset_type', type=str, default='squad')
     parser.add_argument('--output_dir', type=str, default='./eval_results')
     parser.add_argument('--batch_size', type=int, default=128)
     parser.add_argument('--input_sequence_max_length', type=int, default=512)
