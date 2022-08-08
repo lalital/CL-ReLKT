@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 import math
 from collections import defaultdict, Counter
+from functools import partial
 import os
 import glob
 from typing import Dict, List
@@ -59,8 +60,7 @@ def add_eos_to_examples(example):
     return result
 
 
-def convert_to_features(example, tokenizer = TOKENIZER):
-    
+def convert_to_features(example, tokenizer):
     assert tokenizer is not None
 
     encoding = {}
@@ -144,11 +144,13 @@ def main(args):
     if test_dataset_type == 'squad':
         squad_en_processed = process_squad_en(squad_en)
         squad_en_val_processed = list(squad_en_processed['validation'].values())
-        features = list(map(convert_to_features, map(add_eos_to_examples, squad_en_val_processed)))
+        _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
+        features = list(map(_convert_to_features, map(add_eos_to_examples, squad_en_val_processed)))
         references = [item['answers'] for item in features]
     elif test_dataset_type == 'xsquad':
         xquad_test_dataset = squad_xx['test']
-        features = list(map(convert_to_features, map(add_eos_to_examples, xquad_test_dataset)))
+        _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
+        features = list(map(_convert_to_features, map(add_eos_to_examples, xquad_test_dataset)))
         references = [ list(map(lambda x: x['text'], item['answers'])) for item in xquad_test_dataset ]
     else:
         raise ValueError('The value of `test_dataset_type` should be either `squad` or `xquad`.')
