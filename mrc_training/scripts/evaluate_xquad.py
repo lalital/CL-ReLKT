@@ -30,9 +30,11 @@ from modules.metrics import *
 
 TOKENIZER = None
 INPUT_SEQUENCE_MAX_LENGTH = 512
-def init_mt5_base_tokenizer():
-    TOKENIZER = MT5Tokenizer.from_pretrained('google/mt5-base')
 
+
+def init_mt5_base_tokenizer():
+    global TOKENIZER
+    TOKENIZER = MT5Tokenizer.from_pretrained('google/mt5-base')
 
 def add_eos_to_examples(example):
     
