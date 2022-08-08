@@ -220,7 +220,7 @@ def main(args):
     target_result_dir = os.path.join(output_dir, test_dataset_type)
     if not os.path.exists(target_result_dir):
         os.makedirs(target_result_dir, exist_ok=True)
-        target_result_path = os.path.join(target_result_dir, f'{test_dataset_type}.{model_exp_name}.json')
+    target_result_path = os.path.join(target_result_dir, f'{test_dataset_type}.{model_exp_name}.json')
 
     with open(target_result_path, 'w', encoding='utf-8') as f:
         json.dump(scores, f, indent=4)
