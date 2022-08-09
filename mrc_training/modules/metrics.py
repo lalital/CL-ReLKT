@@ -48,10 +48,37 @@ def metric_max_over_ground_truths(metric_fn, prediction, ground_truths):
         scores_for_ground_truths.append(score)
     return max(scores_for_ground_truths)
 
+def per_example_evaluate_with_lang(gold_answers, predictions, reference_langs=None):
+    
+    per_lang_scores = defaultdict(lambda: list())
+
+    for ground_truths, prediction, lang in zip(gold_answers, predictions, reference_langs):
+        total += 1
+
+        per_lang_scores[lang]['exact_match'].append(metric_max_over_ground_truths(
+                    exact_match_score, prediction, ground_truths))
+        per_lang_scores[lang]['f1'].append(metric_max_over_ground_truths(
+          f1_score, prediction, ground_truths))
+
+    return per_lang_scores
+
+def per_example_evaluate(gold_answers, predictions):
+ 
+    per_example_scores = defaultdict(lambda: list())
+
+    for ground_truths, prediction in zip(gold_answers, predictions):
+        total += 1
+
+        per_example_scores['exact_match'].append(metric_max_over_ground_truths(
+                    exact_match_score, prediction, ground_truths))
+        per_example_scores['f1'].append(metric_max_over_ground_truths(
+          f1_score, prediction, ground_truths))
+
+    return per_example_scores
 
 def evaluate(gold_answers, predictions):
+  
     f1 = exact_match = total = 0
-
     for ground_truths, prediction in zip(gold_answers, predictions):
         total += 1
         exact_match += metric_max_over_ground_truths(
@@ -63,6 +90,23 @@ def evaluate(gold_answers, predictions):
     f1 = 100.0 * f1 / total
 
     return {'exact_match': exact_match, 'f1': f1}
+
+def evaluate_with_lang(gold_answers, predictions, reference_langs=None):
+    per_lang_f1 = defaultdict( )
+    per_lang_em = defaultdict( )
+    per_lang_total = defaultdict()
+
+    for ground_truths, prediction, lang in zip(gold_answers, predictions, reference_langs):
+        per_lang_total[lang] += 1
+        per_lang_em[lang] += metric_max_over_ground_truths(
+                    exact_match_score, prediction, ground_truths)
+        per_lang_f1[lang] += metric_max_over_ground_truths(
+          f1_score, prediction, ground_truths)
+
+    per_lang_em[lang] = 100.0 * per_lang_em[lang] / per_lang_total[lang] 
+    per_lang_f1[lang] = 100.0 * per_lang_f1[lang] / per_lang_total[lang] 
+
+    return { lang: { 'f1': per_lang_f1[lang] , 'em': per_lang_em[lang] } for lang in per_lang_total.keys() }
 
 def f1_score(prediction, ground_truth):
     prediction_tokens = normalize_answer(prediction).split()
