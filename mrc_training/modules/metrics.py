@@ -53,7 +53,6 @@ def per_example_evaluate_with_lang(gold_answers, predictions, reference_langs=No
     per_lang_scores = defaultdict(lambda: list())
 
     for ground_truths, prediction, lang in zip(gold_answers, predictions, reference_langs):
-        total += 1
 
         per_lang_scores[lang]['exact_match'].append(metric_max_over_ground_truths(
                     exact_match_score, prediction, ground_truths))
