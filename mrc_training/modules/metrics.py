@@ -90,9 +90,9 @@ def evaluate(gold_answers, predictions):
     return {'exact_match': exact_match, 'f1': f1}
 
 def evaluate_with_lang(gold_answers, predictions, reference_langs=None):
-    per_lang_f1 = defaultdict( )
-    per_lang_em = defaultdict( )
-    per_lang_total = defaultdict()
+    per_lang_f1 = defaultdict(lambda: list())
+    per_lang_em = defaultdict(lambda: list())
+    per_lang_total = Counter()
 
     for ground_truths, prediction, lang in zip(gold_answers, predictions, reference_langs):
         per_lang_total[lang] += 1
