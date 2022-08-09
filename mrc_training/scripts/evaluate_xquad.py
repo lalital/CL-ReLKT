@@ -151,7 +151,7 @@ def main(args):
         xquad_test_dataset = squad_xx['test']
         _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
         features = list(map(_convert_to_features, map(add_eos_to_examples, xquad_test_dataset)))
-        references_lang = list(map(lambda x: x['item'], xquad_test_dataset))
+        references_lang = list(map(lambda x: x['lang'], xquad_test_dataset))
         references = [ list(map(lambda x: x['text'], item['answers'])) for item in xquad_test_dataset ]
     else:
         raise ValueError('The value of `test_dataset_type` should be either `squad` or `xquad`.')
