@@ -218,7 +218,11 @@ def main(args):
         if references_lang is not None:
             per_lang_per_example_scores = per_example_evaluate_with_lang(references, predictions, references_lang)
             per_lang_eval_results = evaluate_with_lang(references, predictions, references_lang)
-
+            per_lang_per_checkpoint_scores.append({
+                'model_ckp': model_checkpoint,
+                'model_dir': each_ckp_finetuned_model_dir,
+                **per_lang_eval_results,
+            })
 
         print('Per-epoch eval results')
         print(eval_results)
@@ -228,11 +232,7 @@ def main(args):
             'model_dir': each_ckp_finetuned_model_dir,
             **eval_results,
         })
-        per_lang_per_checkpoint_scores.append({
-            'model_ckp': model_checkpoint,
-            'model_dir': each_ckp_finetuned_model_dir,
-            **per_lang_eval_results,
-        })
+      
     target_result_dir = os.path.join(output_dir, test_dataset_type)
     if not os.path.exists(target_result_dir):
         os.makedirs(target_result_dir, exist_ok=True)
