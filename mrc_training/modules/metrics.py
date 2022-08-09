@@ -50,7 +50,7 @@ def metric_max_over_ground_truths(metric_fn, prediction, ground_truths):
 
 def per_example_evaluate_with_lang(gold_answers, predictions, reference_langs=None):
     
-    per_lang_scores = defaultdict(lambda: list())
+    per_lang_scores = defaultdict(lambda: defaultdict(lambda :list()))
 
     for ground_truths, prediction, lang in zip(gold_answers, predictions, reference_langs):
 
