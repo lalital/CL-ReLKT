@@ -140,7 +140,7 @@ def main(args):
     squad_xx = { 
         'test': json.load(open(os.path.join(squad_xx_dir, 'test.json')))['data']
     }
-    features, references = None, None
+    features, references, references_lang = None, None, None
     if test_dataset_type == 'squad':
         squad_en_processed = process_squad_en(squad_en)
         squad_en_val_processed = list(squad_en_processed['validation'].values())
@@ -151,6 +151,7 @@ def main(args):
         xquad_test_dataset = squad_xx['test']
         _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
         features = list(map(_convert_to_features, map(add_eos_to_examples, xquad_test_dataset)))
+        references_lang = list(map(lambda x: x['item'], xquad_test_dataset))
         references = [ list(map(lambda x: x['text'], item['answers'])) for item in xquad_test_dataset ]
     else:
         raise ValueError('The value of `test_dataset_type` should be either `squad` or `xquad`.')
@@ -173,7 +174,10 @@ def main(args):
         model_exp_name = finetuned_model_dir.split('/')[-1]
         model_checkpoint = each_ckp_finetuned_model_dir.split('-')[-1] # pattern: `checkpoint-([\d]+)`
 
-        scores = []
+        per_checkpoint_scores = []
+        per_lang_per_checkpoint_scores = []
+        per_example_scores = []
+        per_lang_per_example_scores = []
 
         data_collator = DataCollatorForSeq2Seq(tokenizer=TOKENIZER,
                                                 padding=True,
@@ -207,24 +211,49 @@ def main(args):
 
             predictions.extend(answer)
 
+
+        per_example_scores = per_example_evaluate(references, predictions)
         eval_results = evaluate(references, predictions)
+        
+        if references_lang is not None:
+            per_lang_per_example_scores = per_example_evaluate_with_lang(references, predictions, references_lang)
+            per_lang_eval_results = evaluate_with_lang(references, predictions, references_lang)
+
+
         print('Per-epoch eval results')
         print(eval_results)
  
-        scores.append({
+        per_checkpoint_scores.append({
             'model_ckp': model_checkpoint,
             'model_dir': each_ckp_finetuned_model_dir,
             **eval_results,
         })
-
+        per_lang_per_checkpoint_scores.append({
+            'model_ckp': model_checkpoint,
+            'model_dir': each_ckp_finetuned_model_dir,
+            **per_lang_eval_results,
+        })
     target_result_dir = os.path.join(output_dir, test_dataset_type)
     if not os.path.exists(target_result_dir):
         os.makedirs(target_result_dir, exist_ok=True)
-    target_result_path = os.path.join(target_result_dir, f'{test_dataset_type}.{model_exp_name}.json')
-
-    with open(target_result_path, 'w', encoding='utf-8') as f:
-        json.dump(scores, f, indent=4)
     
+    target_result_per_checkpoint_path = os.path.join(target_result_dir, f'{test_dataset_type}.{model_exp_name}.per_checkpoint.json')
+    target_result_per_example_path = os.path.join(target_result_dir, f'{test_dataset_type}.{model_exp_name}.per_example.json')
+  
+    with open(target_result_per_checkpoint_path, 'w', encoding='utf-8') as f:
+        json.dump(per_checkpoint_scores, f, indent=4)
+    with open(target_result_per_example_path, 'w', encoding='utf-8') as f:
+        json.dump(per_example_scores, f, indent=4)
+
+    if references_lang:
+        target_result_per_lang_per_checkpoint_path = os.path.join(target_result_dir, f'{test_dataset_type}.{model_exp_name}.per_checkpoint.per_lang.json')
+        target_result_per_lang_per_example_path = os.path.join(target_result_dir, f'{test_dataset_type}.{model_exp_name}.per_example.per_lang.json')
+
+        with open(target_result_per_lang_per_checkpoint_path, 'w', encoding='utf-8') as f:
+            json.dump(per_lang_per_checkpoint_scores, f, indent=4)
+        with open(target_result_per_lang_per_example_path, 'w', encoding='utf-8') as f:
+            json.dump(per_lang_per_example_scores, f, indent=4)
+
     print('\n')
     print('-'*60)
     print('\n\n')
