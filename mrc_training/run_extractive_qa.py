@@ -44,7 +44,7 @@ def main(args):
 
     val_dataset = [item for topic in val_dataset['data'] for item in topic['paragraphs'] ]  
     
-    training_args = DEFAULT_TRAINING_ARGS_MAPPING[model_name][model_variant]
+    training_args = DEFAULT_TRAINING_ARGS_MAPPING[model_name][model_variant](output_dir)
 
     print('INFO: Initialize Trainer')
     
