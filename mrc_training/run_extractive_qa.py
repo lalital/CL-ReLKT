@@ -17,8 +17,8 @@ DEFAULT_TRAINING_ARGS_MAPPING: Dict[str, Callable] = {
             'train_batch_size': 3,
             'gradient_accumulation_steps': 8,
             'output_dir': f'{output_dir}',
-            'evaluate_during_training':True,
-            'evaluate_during_training_steps':512,
+            'evaluate_during_training': True,
+            'evaluate_during_training_steps': 512,
             'best_model_dir': f"{output_dir}/best_model",
             'evaluate_during_training_verbose': False,
         }
