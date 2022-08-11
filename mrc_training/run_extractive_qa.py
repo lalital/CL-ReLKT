@@ -21,6 +21,23 @@ DEFAULT_TRAINING_ARGS_MAPPING: Dict[str, Callable] = {
             'evaluate_during_training_steps': 512,
             'best_model_dir': f"{output_dir}/best_model",
             'evaluate_during_training_verbose': False,
+        },
+        'xlm-roberta-large': lambda output_dir: {
+            'learning_rate': 1e-5,
+            'num_train_epochs': 3,
+            'max_seq_length': 512,
+            'doc_stride': 128,
+            'overwrite_output_dir': True,
+            'reprocess_input_data': False,
+            'train_batch_size': 32,
+            'gradient_accumulation_steps': 1,
+            'output_dir': f'{output_dir}',
+            'evaluate_during_training': True,
+            'evaluate_during_training_steps': 512,
+            'best_model_dir': f"{output_dir}/best_model",
+            'evaluate_during_training_verbose': True,
+            'manual_seed': 2022,
+            'warmup_ratio': 0.2,
         }
     }
 }
