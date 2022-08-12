@@ -4,7 +4,7 @@ import argparse
 from typing import Callable, Dict, List
 from simpletransformers.question_answering import QuestionAnsweringModel
 import json
-import wandb
+# import wandb
 
 DEFAULT_TRAINING_ARGS_MAPPING: Dict[str, Callable] = {
     'xlmroberta': {
@@ -73,11 +73,11 @@ def main(args):
     training_args['weight_decay'] = args.weight_decay
     training_args['train_batch_size'] = args.train_batch_size
     training_args['gradient_accumulation_steps'] = args.gradient_accumulation_steps
-    training_args['wandb_project'] = args.wandb_project
-    training_args['wandb_kwargs'] = {
-        'name': args.wandb_name,
-        # 'entity': args.entity
-    }
+    # training_args['wandb_project'] = args.wandb_project
+    # training_args['wandb_kwargs'] = {
+    #     'name': args.wandb_name,
+    #     # 'entity': args.entity
+    # }
 
     print(f'INFO: training_args: {training_args}')
 
@@ -105,22 +105,22 @@ if __name__ == '__main__':
     parser.add_argument('--weight_decay', type=float, default=0.01)
     parser.add_argument('--train_batch_size', type=int, default=8)
     parser.add_argument('--gradient_accumulation_steps', type=int, default=6)
-    parser.add_argument('--wandb_project', type=str, default='scads.cl-reklt.mrc-training')
-    parser.add_argument('--wandb_name', type=str, default='mrc._extractive_reader')
+    # parser.add_argument('--wandb_project', type=str, default='scads.cl-reklt.mrc-training')
+    # parser.add_argument('--wandb_name', type=str, default='mrc._extractive_reader')
     # parser.add_argument('--wandb_entity', type=str, default='scads')
 
     args = parser.parse_args()
 
 
-    WANDB_API_KEY = os.getenv("WANDB_API_KEY")
-    WANDB_NAME = os.getenv("WANDB_NAME")
-    WANDB_PROJECT = os.getenv("WANDB_PROJECT", 'demo')
-    WANDB_ENTITY = os.getenv("WANDB_ENTITY", 'airesearch')
-    WANDB_MODE = os.getenv("WANDB_MODE", 'offline')
-    wandb.init(mode=WANDB_MODE,
-               project=WANDB_PROJECT,
-               name=WANDB_NAME,
-               entity=WANDB_ENTITY)
+    # WANDB_API_KEY = os.getenv("WANDB_API_KEY")
+    # WANDB_NAME = os.getenv("WANDB_NAME")
+    # WANDB_PROJECT = os.getenv("WANDB_PROJECT", 'demo')
+    # WANDB_ENTITY = os.getenv("WANDB_ENTITY", 'airesearch')
+    # WANDB_MODE = os.getenv("WANDB_MODE", 'offline')
+    # wandb.init(mode=WANDB_MODE,
+    #            project=WANDB_PROJECT,
+    #            name=WANDB_NAME,
+    #            entity=WANDB_ENTITY)
     main(args)
 
 
