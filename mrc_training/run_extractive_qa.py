@@ -93,7 +93,7 @@ if __name__ == '__main__':
     parser.add_argument('--output_dir', type=str, default='./checkpoints/squad_extractive.xlm-roberta-base')
     parser.add_argument('--model_name', type=str, default='xlmroberta')
     parser.add_argument('--model_variant', type=str, default='xlm-roberta-base')
-    parser.add_argument('--learning_rate', type=float, default=1e-5)
+    parser.add_argument('--learning_rate', type=float, default=1.5e-5)
     parser.add_argument('--num_train_epochs', type=int, default=3)
     parser.add_argument('--warmup_ratio', type=int, default=0.06)
     parser.add_argument('--weight_decay', type=int, default=0.01)
