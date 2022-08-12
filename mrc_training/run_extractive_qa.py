@@ -7,7 +7,7 @@ import json
 import wandb
 
 WANDB_API_KEY = os.getenv("WANDB_API_KEY")
-WANDB_PROJECT = os.engetenvviron("WANDB_PROJECT", 'demo')
+WANDB_PROJECT = os.getenv("WANDB_PROJECT", 'demo')
 WANDB_ENTITY = os.getenv("WANDB_ENTITY", 'airesearch')
 WANDB_MODE = os.getenv("WANDB_MODE", 'offline')
 wandb.init(mode=WANDB_MODE, entity=WANDB_ENTITY)
