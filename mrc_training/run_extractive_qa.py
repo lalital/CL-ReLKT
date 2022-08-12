@@ -1,5 +1,6 @@
 
-import os import argparse
+import os
+import argparse
 from typing import Callable, Dict, List
 from simpletransformers.question_answering import QuestionAnsweringModel
 import json
