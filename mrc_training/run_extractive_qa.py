@@ -47,24 +47,54 @@ DEFAULT_TRAINING_ARGS_MAPPING: Dict[str, Callable] = {
     }
 }
 
+def process_squad(dataset):
+    return [item for topic in dataset['data'] for item in topic['paragraphs'] ]
+
+def process_xorqa(dataset):
+    processed_dataset = []
+    for item in dataset:
+        processed_dataset.append(
+        {
+            'title': item['title'],
+            'context': item['context'],
+            'qas':[{
+                'question': item['question'],
+                'answers': [{'text':item["answers"]['text'][0],
+                             'answer_start':item["answers"]['answer_start'][0]
+                            }],
+                'lang': item["lang"],
+                "id": item['id'],
+            }]
+        }
+    )
+    return processed_dataset
+
+PROCESS_FN_MAPPER = {
+    'squad': process_squad,
+    'xorqa': process_xorqa,
+}
+
 def main(args):
 
     # Load data
+    dataset_name = args.dataset_name
     train_data_path = args.train_data_path
     val_data_path = args.val_data_path
     output_dir = args.output_dir
     model_name = args.model_name
     model_variant = args.model_variant
 
+    if dataset_name not in ['squad', 'xorqa']:
+        raise ValueError('dataset_name should be either `squad` or `xorqa`')
+    
+    dataset_process_fn = PROCESS_FN_MAPPER[dataset_name]
+
      
-    train_dataset = json.load(open(train_data_path))
-    train_dataset = [item for topic in train_dataset['data'] for item in topic['paragraphs'] ]
+    train_dataset = dataset_process_fn(json.load(open(train_data_path)))
 
     val_dataset = None
     if val_data_path is not None:
-        val_dataset = json.load(open(val_data_path))
-
-    val_dataset = [item for topic in val_dataset['data'] for item in topic['paragraphs'] ]  
+        val_dataset = dataset_process_fn(json.load(open(val_data_path)))
     
     training_args = DEFAULT_TRAINING_ARGS_MAPPING[model_name][model_variant](output_dir)
     training_args['learning_rate'] = args.learning_rate
@@ -94,6 +124,7 @@ def main(args):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('dataset_name', type=str)
     parser.add_argument('train_data_path', type=str)
     parser.add_argument('--val_data_path', type=str, default=None)
     parser.add_argument('--output_dir', type=str, default='./checkpoints/squad_extractive.xlm-roberta-base')
