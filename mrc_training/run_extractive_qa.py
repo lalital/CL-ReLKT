@@ -75,7 +75,7 @@ def main(args):
     training_args['wandb_project'] = args.wandb_project
     training_args['wandb_kwargs'] = {
         'name': args.wandb_name,
-        'entity': args.entity
+        # 'entity': args.entity
     }
 
     print(f'INFO: training_args: {training_args}')
