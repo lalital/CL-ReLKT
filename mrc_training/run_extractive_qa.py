@@ -99,6 +99,7 @@ if __name__ == '__main__':
     parser.add_argument('--weight_decay', type=int, default=0.01)
     parser.add_argument('--train_batch_size', type=int, default=8)
     parser.add_argument('--gradient_accumulation_steps', type=int, default=6)
+    parser.add_argument('--wandb_project', type=str, default='scads.cl-reklt.mrc-training')
     
 
     args = parser.parse_args()
