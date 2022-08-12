@@ -74,7 +74,8 @@ def main(args):
     training_args['gradient_accumulation_steps'] = args.gradient_accumulation_steps
     training_args['wandb_project'] = args.wandb_project
     training_args['wandb_kwargs'] = {
-        'name': args.wandb_name 
+        'name': args.wandb_name,
+        'entity': args.entity
     }
 
     print(f'INFO: training_args: {training_args}')
@@ -105,6 +106,7 @@ if __name__ == '__main__':
     parser.add_argument('--gradient_accumulation_steps', type=int, default=6)
     parser.add_argument('--wandb_project', type=str, default='scads.cl-reklt.mrc-training')
     parser.add_argument('--wandb_name', type=str, default='mrc._extractive_reader')
+    parser.add_argument('--wandb_entity', type=str, default='scads')
 
     args = parser.parse_args()
 
