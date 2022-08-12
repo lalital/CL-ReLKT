@@ -6,12 +6,6 @@ from simpletransformers.question_answering import QuestionAnsweringModel
 import json
 import wandb
 
-WANDB_API_KEY = os.getenv("WANDB_API_KEY")
-WANDB_PROJECT = os.getenv("WANDB_PROJECT", 'demo')
-WANDB_ENTITY = os.getenv("WANDB_ENTITY", 'airesearch')
-WANDB_MODE = os.getenv("WANDB_MODE", 'offline')
-wandb.init(mode=WANDB_MODE, entity=WANDB_ENTITY)
-
 DEFAULT_TRAINING_ARGS_MAPPING: Dict[str, Callable] = {
     'xlmroberta': {
         'xlm-roberta-base': lambda output_dir: {
@@ -116,6 +110,17 @@ if __name__ == '__main__':
     # parser.add_argument('--wandb_entity', type=str, default='scads')
 
     args = parser.parse_args()
+
+
+    WANDB_API_KEY = os.getenv("WANDB_API_KEY")
+    WANDB_NAME = os.getenv("WANDB_NAME")
+    WANDB_PROJECT = os.getenv("WANDB_PROJECT", 'demo')
+    WANDB_ENTITY = os.getenv("WANDB_ENTITY", 'airesearch')
+    WANDB_MODE = os.getenv("WANDB_MODE", 'offline')
+    wandb.init(mode=WANDB_MODE,
+               project=WANDB_PROJECT,
+               name=WANDB_NAME,
+               entity=WANDB_ENTITY)
     main(args)
 
 
