@@ -130,7 +130,7 @@ def main(args):
     test_dataset_type = args.test_dataset_type 
 
     squad_en_dir = os.path.join(data_dir, 'en')
-    squad_xx_dir = os.path.join(data_dir, 'datasets_format')
+    xorqa_xx_dir = mlqa_xx_dir = squad_xx_dir = os.path.join(data_dir, 'datasets_format')
 
     squad_en = { 
         'train': json.load(open(os.path.join(squad_en_dir, 'train-v1.1.json')))['data'],
@@ -140,6 +140,13 @@ def main(args):
     squad_xx = { 
         'test': json.load(open(os.path.join(squad_xx_dir, 'test.json')))['data']
     }
+    mlqa_xx = { 
+        'test': json.load(open(os.path.join(mlqa_xx_dir, 'test.json')))['data']
+    }
+    xorqa_xx = { 
+        'test': json.load(open(os.path.join(xorqa_xx_dir, 'test.json')))['data']
+    }
+
     features, references, references_lang = None, None, None
     if test_dataset_type == 'squad':
         squad_en_processed = process_squad_en(squad_en)
@@ -153,8 +160,20 @@ def main(args):
         features = list(map(_convert_to_features, map(add_eos_to_examples, xquad_test_dataset)))
         references_lang = list(map(lambda x: x['lang'], xquad_test_dataset))
         references = [ list(map(lambda x: x['text'], item['answers'])) for item in xquad_test_dataset ]
+    elif test_dataset_type == 'mlqa':
+        mlqa_test_dataset = mlqa_xx['test']
+        _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
+        features = list(map(_convert_to_features, map(add_eos_to_examples, mlqa_test_dataset)))
+        references_lang = list(map(lambda x: x['lang'], mlqa_test_dataset))
+        references = [ item['answers']['text'] for item in mlqa_test_dataset ]
+    elif test_dataset_type == 'xorqa':
+        xorqa_test_dataset = xorqa_xx['test']
+        _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
+        features = list(map(_convert_to_features, map(add_eos_to_examples, xorqa_test_dataset)))
+        references_lang = list(map(lambda x: x['lang'], xorqa_test_dataset))
+        references = [ item['answers']['text'] for item in xorqa_test_dataset ]
     else:
-        raise ValueError('The value of `test_dataset_type` should be either `squad` or `xquad`.')
+        raise ValueError('The value of `test_dataset_type` should be from the following values [`squad`, `xquad`, `mlqa`, `xorqa`].')
 
     finetuned_model_dir = args.finetuned_model_dir
     each_ckp_finetuned_model_dirs = glob.glob(os.path.join(finetuned_model_dir, 'checkpoint-*'))
