@@ -265,8 +265,9 @@ def main(args):
         })
 
         print(f'DEBUG: len(per_checkpoint_scores): {len(per_checkpoint_scores)}')
-
-
+        print(f'\nDEBUG: per_checkpoint_scores')
+        pprint(per_checkpoint_scores)
+        print('\n')
     target_result_dir = os.path.join(output_dir, test_dataset_type)
     if not os.path.exists(target_result_dir):
         os.makedirs(target_result_dir, exist_ok=True)
