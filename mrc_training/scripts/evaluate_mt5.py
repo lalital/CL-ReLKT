@@ -238,8 +238,9 @@ def main(args):
             per_lang_per_example_scores = per_example_evaluate_with_lang(references, predictions, references_lang)
             per_lang_eval_results = evaluate_with_lang(references, predictions, references_lang)
         
-        print('Per-epoch eval results')
-        # print(eval_results)
+        print('\nPer-epoch eval results:')
+        print(eval_results)
+        print('\n')
         per_checkpoint_scores.append({
             'model_ckp': model_checkpoint,
             'model_dir': each_ckp_finetuned_model_dir,
