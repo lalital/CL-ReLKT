@@ -46,6 +46,7 @@ def add_eos_to_examples(example):
 
     if 'answers' in example.keys() and type(example['answers']) == dict:
         result['answers'] = example['answers']['text'] 
+        answer = result['answers'][0]
     elif 'answers' in example.keys() and type(example['answers']) == list and type(example['answers'][0]) == dict:
         answer = example['answers'][0]['text']
         result['answers'] = example['answers']
