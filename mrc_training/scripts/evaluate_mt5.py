@@ -190,6 +190,11 @@ def main(args):
     generation_max_length = args.generation_max_length
     generation_beam_size = args.generation_beam_size
 
+    per_checkpoint_scores = []
+    per_lang_per_checkpoint_scores = []
+    per_example_scores = []
+    per_lang_per_example_scores = []
+    
     for each_ckp_finetuned_model_dir in each_ckp_finetuned_model_dirs:
 
         print('='*50)
@@ -201,10 +206,7 @@ def main(args):
         model = MT5ForConditionalGeneration.from_pretrained(os.path.join(finetuned_model_dir, f'checkpoint-{model_checkpoint}')).to('cuda:0')
         model.eval()
 
-        per_checkpoint_scores = []
-        per_lang_per_checkpoint_scores = []
-        per_example_scores = []
-        per_lang_per_example_scores = []
+        
 
         data_collator = DataCollatorForSeq2Seq(tokenizer=TOKENIZER,
                                                 padding=True,
