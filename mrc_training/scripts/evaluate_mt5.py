@@ -231,28 +231,26 @@ def main(args):
             predictions.extend(answer)
 
 
-            per_example_scores = per_example_evaluate(references, predictions)
-            eval_results = evaluate(references, predictions)
-            
-            if references_lang is not None:
-                per_lang_per_example_scores = per_example_evaluate_with_lang(references, predictions, references_lang)
-                per_lang_eval_results = evaluate_with_lang(references, predictions, references_lang)
-            
-
-            print('Per-epoch eval results')
-            print(eval_results)
-    
-            per_checkpoint_scores.append({
-                'model_ckp': model_checkpoint,
-                'model_dir': each_ckp_finetuned_model_dir,
-                **eval_results,
-            })
-            if references_lang is not None:
-                per_lang_per_checkpoint_scores.append({
-                'model_ckp': model_checkpoint,
-                'model_dir': each_ckp_finetuned_model_dir,
-                **per_lang_eval_results,
-            })
+        per_example_scores = per_example_evaluate(references, predictions)
+        eval_results = evaluate(references, predictions)
+        
+        if references_lang is not None:
+            per_lang_per_example_scores = per_example_evaluate_with_lang(references, predictions, references_lang)
+            per_lang_eval_results = evaluate_with_lang(references, predictions, references_lang)
+        
+        print('Per-epoch eval results')
+        # print(eval_results)
+        per_checkpoint_scores.append({
+            'model_ckp': model_checkpoint,
+            'model_dir': each_ckp_finetuned_model_dir,
+            **eval_results,
+        })
+        if references_lang is not None:
+            per_lang_per_checkpoint_scores.append({
+            'model_ckp': model_checkpoint,
+            'model_dir': each_ckp_finetuned_model_dir,
+            **per_lang_eval_results,
+        })
     target_result_dir = os.path.join(output_dir, test_dataset_type)
     if not os.path.exists(target_result_dir):
         os.makedirs(target_result_dir, exist_ok=True)
