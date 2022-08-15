@@ -77,7 +77,7 @@ def per_example_evaluate(gold_answers, predictions):
 def evaluate(gold_answers, predictions):
   
     f1 = exact_match = total = 0
-    for ground_truths, prediction in list(zip(gold_answers, predictions)):
+    for ground_truths, prediction in  vzip(gold_answers, predictions)):
         total += 1
         exact_match += metric_max_over_ground_truths(
                     exact_match_score, prediction, ground_truths)
@@ -89,12 +89,12 @@ def evaluate(gold_answers, predictions):
 
     return {'exact_match': exact_match, 'f1': f1}
 
-def evaluate_with_lang(gold_answers, predictions, reference_langs=None):
+def evaluate_with_lang(gold_answers, predictions, reference_langs):
     per_lang_f1 = Counter()
     per_lang_em = Counter()
     per_lang_total = Counter()
-
-    for ground_truths, prediction, lang in zip(gold_answers, predictions, reference_langs):
+    assert len(gold_answers) == len(predictions) == len(reference_langs)
+    for ground_truths, prediction, lang in list(zip(gold_answers, predictions, reference_langs)):
         per_lang_total[lang] += 1
         per_lang_em[lang] += metric_max_over_ground_truths(
                     exact_match_score, prediction, ground_truths)
