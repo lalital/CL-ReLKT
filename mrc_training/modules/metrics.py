@@ -65,7 +65,7 @@ def per_example_evaluate(gold_answers, predictions):
  
     per_example_scores = defaultdict(lambda: list())
 
-    for ground_truths, prediction in zip(gold_answers, predictions):
+    for ground_truths, prediction in list(zip(gold_answers, predictions)):
 
         per_example_scores['exact_match'].append(metric_max_over_ground_truths(
                     exact_match_score, prediction, ground_truths))
@@ -77,7 +77,7 @@ def per_example_evaluate(gold_answers, predictions):
 def evaluate(gold_answers, predictions):
   
     f1 = exact_match = total = 0
-    for ground_truths, prediction in zip(gold_answers, predictions):
+    for ground_truths, prediction in list(zip(gold_answers, predictions)):
         total += 1
         exact_match += metric_max_over_ground_truths(
                     exact_match_score, prediction, ground_truths)
