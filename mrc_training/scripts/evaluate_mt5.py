@@ -65,7 +65,7 @@ def convert_to_features(example, tokenizer):
 
     encoding = {}
     input_encoding = tokenizer.encode_plus(example['input_text'],
-                                           pad_to_max_length=True,
+                                        #    pad_to_max_length=True,
                                            truncation=True,
                                            max_length=INPUT_SEQUENCE_MAX_LENGTH,
                                            add_special_tokens=True)
