@@ -225,8 +225,8 @@ def main(args):
                 batch_level_eval_results = evaluate(references[i*batch_size:(i+1)*batch_size], answer[:batch_size])
                 print(' - Batch-level eval:')
                 pprint(batch_level_eval_results, indent=4)
-                zipped_ref_ans = zip(references[i*batch_size:(i+1)*batch_size - abs(batch_size - 10)],
-                                     answer[:10] )
+                zipped_ref_ans = list(zip(references[i*batch_size:(i+1)*batch_size - abs(batch_size - 10)],
+                                     answer[:10]))
                 print(f'zipped_ref_ans:\n{zipped_ref_ans}\n')
                 print('\n')
                 c+=1
