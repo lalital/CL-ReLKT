@@ -100,7 +100,10 @@ def evaluate_with_lang(gold_answers, predictions, reference_langs):
                     exact_match_score, prediction, ground_truths)
         per_lang_f1[lang] += metric_max_over_ground_truths(
           f1_score, prediction, ground_truths)
-    print(f'DEBUG: per_lang_total[lang]: {per_lang_total[lang]}')
+    
+    print(f'DEBUG: per_lang_total: {per_lang_total}')
+    print(f'DEBUG: sum(per_lang_total.values()): {sum(per_lang_total.values())}')
+
     assert sum(per_lang_total.values()) == len(gold_answers)
     per_lang_em[lang] = 100.0 * per_lang_em[lang] / per_lang_total[lang] 
     per_lang_f1[lang] = 100.0 * per_lang_f1[lang] / per_lang_total[lang] 
