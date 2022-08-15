@@ -259,7 +259,7 @@ def main(args):
         if references_lang is not None:
             per_lang_per_example_scores.append(per_example_evaluate_with_lang(references, predictions, references_lang))
             per_lang_eval_results = evaluate_with_lang(references, predictions, references_lang)
-
+            print(f'\nDEBUG: per_lang_eval_results: {per_lang_eval_results}\n')
             per_lang_per_checkpoint_scores.append({
             'model_ckp': model_checkpoint,
             'model_dir': each_ckp_finetuned_model_dir,
