@@ -179,8 +179,7 @@ def main(args):
     each_ckp_finetuned_model_dirs = glob.glob(os.path.join(finetuned_model_dir, 'checkpoint-*'))
     assert len(each_ckp_finetuned_model_dirs) >= 1
     
-    model = MT5ForConditionalGeneration.from_pretrained(finetuned_model_dir).to('cuda:0')
-    model.eval()
+
     batch_size = args.batch_size
     generation_max_length = args.generation_max_length
     generation_beam_size = args.generation_beam_size
@@ -192,6 +191,9 @@ def main(args):
         
         model_exp_name = finetuned_model_dir.split('/')[-1]
         model_checkpoint = each_ckp_finetuned_model_dir.split('-')[-1] # pattern: `checkpoint-([\d]+)`
+
+        model = MT5ForConditionalGeneration.from_pretrained(os.path.join(finetuned_model_dir, f'checkpoint-{model_checkpoint}')).to('cuda:0')
+        model.eval()
 
         per_checkpoint_scores = []
         per_lang_per_checkpoint_scores = []
