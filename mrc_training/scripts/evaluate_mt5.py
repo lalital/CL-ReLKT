@@ -129,44 +129,46 @@ def main(args):
     output_dir = args.output_dir
     test_dataset_type = args.test_dataset_type 
 
-    squad_en_dir = os.path.join(data_dir, 'en')
-    xorqa_xx_dir = mlqa_xx_dir = squad_xx_dir = os.path.join(data_dir, 'datasets_format')
-
-    squad_en = { 
-        'train': json.load(open(os.path.join(squad_en_dir, 'train-v1.1.json')))['data'],
-        'validation': json.load(open(os.path.join(squad_en_dir, 'dev-v1.1.json')))['data']
-    }
-
-    squad_xx = { 
-        'test': json.load(open(os.path.join(squad_xx_dir, 'test.json')))['data']
-    }
-    mlqa_xx = { 
-        'test': json.load(open(os.path.join(mlqa_xx_dir, 'test.json')))['data']
-    }
-    xorqa_xx = { 
-        'test': json.load(open(os.path.join(xorqa_xx_dir, 'test.json')))['data']
-    }
 
     features, references, references_lang = None, None, None
+    xorqa_xx_dir = mlqa_xx_dir = squad_xx_dir = os.path.join(data_dir, 'datasets_format')
+
     if test_dataset_type == 'squad':
+        squad_en_dir = os.path.join(data_dir, 'en')
+
+        squad_en = { 
+            'train': json.load(open(os.path.join(squad_en_dir, 'train-v1.1.json')))['data'],
+            'validation': json.load(open(os.path.join(squad_en_dir, 'dev-v1.1.json')))['data']
+        }
+        
         squad_en_processed = process_squad_en(squad_en)
         squad_en_val_processed = list(squad_en_processed['validation'].values())
         _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
         features = list(map(_convert_to_features, map(add_eos_to_examples, squad_en_val_processed)))
         references = [item['answers'] for item in squad_en_val_processed]
     elif test_dataset_type == 'xquad':
+        squad_xx = { 
+            'test': json.load(open(os.path.join(squad_xx_dir, 'test.json')))['data']
+        }
+   
         xquad_test_dataset = squad_xx['test']
         _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
         features = list(map(_convert_to_features, map(add_eos_to_examples, xquad_test_dataset)))
         references_lang = list(map(lambda x: x['lang'], xquad_test_dataset))
         references = [ list(map(lambda x: x['text'], item['answers'])) for item in xquad_test_dataset ]
     elif test_dataset_type == 'mlqa':
+        mlqa_xx = { 
+            'test': json.load(open(os.path.join(mlqa_xx_dir, 'test.json')))['data']
+        }
         mlqa_test_dataset = mlqa_xx['test']
         _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
         features = list(map(_convert_to_features, map(add_eos_to_examples, mlqa_test_dataset)))
         references_lang = list(map(lambda x: x['lang'], mlqa_test_dataset))
         references = [ item['answers']['text'] for item in mlqa_test_dataset ]
     elif test_dataset_type == 'xorqa':
+        xorqa_xx = { 
+            'test': json.load(open(os.path.join(xorqa_xx_dir, 'test.json')))['data']
+        }
         xorqa_test_dataset = xorqa_xx['test']
         _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
         features = list(map(_convert_to_features, map(add_eos_to_examples, xorqa_test_dataset)))
