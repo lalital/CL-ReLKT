@@ -103,10 +103,10 @@ def evaluate_with_lang(gold_answers, predictions, reference_langs):
     
     print(f'DEBUG: per_lang_total: {per_lang_total}')
     print(f'DEBUG: sum(per_lang_total.values()): {sum(per_lang_total.values())}')
-
     assert sum(per_lang_total.values()) == len(gold_answers)
-    per_lang_em[lang] = 100.0 * per_lang_em[lang] / per_lang_total[lang] 
-    per_lang_f1[lang] = 100.0 * per_lang_f1[lang] / per_lang_total[lang] 
+    for lang in sorted(list(set(reference_langs))):    
+        per_lang_em[lang] = 100.0 * per_lang_em[lang] / per_lang_total[lang] 
+        per_lang_f1[lang] = 100.0 * per_lang_f1[lang] / per_lang_total[lang] 
 
     return { lang: { 'f1': per_lang_f1[lang] , 'em': per_lang_em[lang] } for lang in per_lang_total.keys() }
 
