@@ -389,7 +389,8 @@ def main(args):
             prediction = qa_pipeline(question=question,
                                      context=context,
                                      max_answer_len=args.max_answer_length,
-                                     max_seq_len=args.input_sequence_max_length)
+                                     max_seq_len=args.input_sequence_max_length
+                                     device=DEVICE)
             prediction_ans = list(map(lambda x: x['answer'].strip(), prediction))
             predictions.extend(prediction_ans)
    
