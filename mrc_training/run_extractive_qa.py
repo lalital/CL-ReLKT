@@ -23,6 +23,7 @@ DEFAULT_TRAINING_ARGS_MAPPING: Dict[str, Callable] = {
             'evaluate_during_training_steps': 512,
             'best_model_dir': f"{output_dir}/best_model",
             'evaluate_during_training_verbose': False,
+            
         },
         'xlm-roberta-large': lambda output_dir: {
             # 'learning_rate': 1e-5,
@@ -136,22 +137,14 @@ if __name__ == '__main__':
     parser.add_argument('--weight_decay', type=float, default=0.01)
     parser.add_argument('--train_batch_size', type=int, default=8)
     parser.add_argument('--gradient_accumulation_steps', type=int, default=6)
+    parser.add_argument('--fp16', type=bool, action='store_true', default=False)
     # parser.add_argument('--wandb_project', type=str, default='scads.cl-reklt.mrc-training')
     # parser.add_argument('--wandb_name', type=str, default='mrc._extractive_reader')
     # parser.add_argument('--wandb_entity', type=str, default='scads')
 
     args = parser.parse_args()
 
-
-    # WANDB_API_KEY = os.getenv("WANDB_API_KEY")
-    # WANDB_NAME = os.getenv("WANDB_NAME")
-    # WANDB_PROJECT = os.getenv("WANDB_PROJECT", 'demo')
-    # WANDB_ENTITY = os.getenv("WANDB_ENTITY", 'airesearch')
-    # WANDB_MODE = os.getenv("WANDB_MODE", 'offline')
-    # wandb.init(mode=WANDB_MODE,
-    #            project=WANDB_PROJECT,
-    #            name=WANDB_NAME,
-    #            entity=WANDB_ENTITY)
+ 
     main(args)
 
 
