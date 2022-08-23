@@ -376,7 +376,7 @@ def main(args):
         
         model.eval()
 
-        qa_pipeline = pipeline('question-answering', model = model, tokenizer = TOKENIZER, device=DEVICE)
+        qa_pipeline = pipeline('question-answering', model = model, tokenizer = TOKENIZER, device=DEVICE.split(':')[-1])
         predictions = []
 
 
