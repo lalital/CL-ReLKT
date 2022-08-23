@@ -11,7 +11,7 @@ DEFAULT_TRAINING_ARGS_MAPPING: Dict[str, Callable] = {
         'xlm-roberta-base': lambda output_dir: {
             # 'learning_rate': 3e-5,
             # 'num_train_epochs': 2,
-            'max_seq_length': 384,
+            'max_seq_length': 512,
             'doc_stride': 128,
             'overwrite_output_dir': True,
             'reprocess_input_data': False,
