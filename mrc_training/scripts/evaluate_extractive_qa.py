@@ -372,7 +372,7 @@ def main(args):
         model_checkpoint = each_ckp_finetuned_model_dir.split('/')[-1].replace('checkpoint-', '')
         print(f"DEBUG: model_checkpoint: {model_checkpoint}")
  
-        model = AutoModelForQuestionAnswering.from_pretrained(each_ckp_finetuned_model_dir).to(DEVICE)
+        model = AutoModelForQuestionAnswering.from_pretrained(each_ckp_finetuned_model_dir)
         model.eval()
 
         qa_pipeline = pipeline('question-answering', model = model, tokenizer = TOKENIZER)
