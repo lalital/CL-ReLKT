@@ -137,7 +137,7 @@ if __name__ == '__main__':
     parser.add_argument('--weight_decay', type=float, default=0.01)
     parser.add_argument('--train_batch_size', type=int, default=8)
     parser.add_argument('--gradient_accumulation_steps', type=int, default=6)
-    parser.add_argument('--fp16', type=bool, action='store_true', default=False)
+    parser.add_argument('--fp16', action='store_true', default=False)
     # parser.add_argument('--wandb_project', type=str, default='scads.cl-reklt.mrc-training')
     # parser.add_argument('--wandb_name', type=str, default='mrc._extractive_reader')
     # parser.add_argument('--wandb_entity', type=str, default='scads')
