@@ -372,10 +372,11 @@ def main(args):
         model_checkpoint = each_ckp_finetuned_model_dir.split('/')[-1].replace('checkpoint-', '')
         print(f"DEBUG: model_checkpoint: {model_checkpoint}")
  
-        model = AutoModelForQuestionAnswering.from_pretrained(each_ckp_finetuned_model_dir)
+        model = AutoModelForQuestionAnswering.from_pretrained(each_ckp_finetuned_model_dir).to(DEVICE)
+        
         model.eval()
 
-        qa_pipeline = pipeline('question-answering', model = model, tokenizer = TOKENIZER)
+        qa_pipeline = pipeline('question-answering', model = model, tokenizer = TOKENIZER, device=DEVICE)
         predictions = []
 
 
@@ -390,7 +391,7 @@ def main(args):
                                      context=context,
                                      max_answer_len=args.max_answer_length,
                                      max_seq_len=args.input_sequence_max_length,
-                                     device=DEVICE)
+                                     )
             prediction_ans = list(map(lambda x: x['answer'].strip(), prediction))
             predictions.extend(prediction_ans)
    
