@@ -44,7 +44,7 @@ from transformers import (
     DataCollatorWithPadding
 )
 from transformers.trainer_utils import EvalLoopOutput, EvalPrediction, get_last_checkpoint
-from transformers.utils import check_min_version, send_example_telemetry
+# from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
 from transformers.optimization import Adafactor, AdafactorSchedule
 
