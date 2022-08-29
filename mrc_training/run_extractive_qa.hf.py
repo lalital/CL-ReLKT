@@ -569,10 +569,7 @@ def main():
     )
 
     model.resize_token_embeddings(len(tokenizer))
-
-    if model.config.decoder_start_token_id is None:
-        raise ValueError("Make sure that `config.decoder_start_token_id` is correctly defined")
-
+ 
     # Preprocessing the datasets.
     # We need to generate and tokenize inputs and targets.
     if training_args.do_train:
