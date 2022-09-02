@@ -282,46 +282,21 @@ def main(args):
             'train': json.load(open(os.path.join(squad_en_dir, 'train-v1.1.json')))['data'],
             'validation': json.load(open(os.path.join(squad_en_dir, 'dev-v1.1.json')))['data']
         }
-        
-        squad_en_processed = process_squad_en(squad_en)
-        # squad_en_val_processed = list(squad_en_processed['validation'].values())
-        # breakpoint()
-        squad_en_val_dataset = Dataset.from_dict(dict(squad_en_processed['validation']))
-        # squad_en_val_dataset = squad_en_val_dataset.select(range(1024))
-        # squad_en_processed = load_dataset(
-        #     'json',
-        #     data_files={ 'validation': os.path.join(squad_en_dir, 'dev-v1.1.json') },
-        #     field="data",
-        #     # cache_dir=model_args.cache_dir,
-        #     # use_auth_token=True if model_args.use_auth_token else None,
-        # )
-        # # _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER, args=args)
-        # features = list(map(_convert_to_features, squad_en_val_processed))
-        # contexts = [item['context'] for item in squad_en_val_processed]
-        references = [item['answers'] for item in squad_en_val_dataset]
-        # column_names = squad_en_val_dataset.column_names
-        # eval_dataset = squad_en_val_dataset.map(
-        #     prepare_validation_features,
-        #     batched=True,
-        #     num_proc=1,
-        #     remove_columns=column_names,
-        #     desc="Running tokenizer on validation dataset",
-        #     load_from_cache_file=True,
-        #     cache_file_name='./cached/squad.en.dev.v1.1'
+        squad_en_test_dataset = squad_en['validation']
 
-        # )
-
-        # print(f'DEBUG: features: {eval_dataset[0:2]}')
-        # print(f'DEBUG: references: {references[0:2]}')
+        _eval_dataset = process_squad_en(squad_en)
+        eval_dataset = Dataset.from_dict(dict(_eval_dataset['validation']))
+        references = [item['answers'] for item in squad_en_test_dataset]
+     
     elif test_dataset_type == 'xquad':
         squad_xx = { 
             'test': json.load(open(os.path.join(squad_xx_dir, 'test.json')))['data']
         }
    
         xquad_test_dataset = squad_xx['test']
-        _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER, args=args)
-        features = list(map(_convert_to_features,xquad_test_dataset))
-        contexts = [item['context'] for item in xquad_test_dataset]
+        _eval_dataset = process_squad_en(squad_xx)
+        eval_dataset = Dataset.from_dict(dict(_eval_dataset['test']))
+        
         references_lang = list(map(lambda x: x['lang'], xquad_test_dataset))
         references = [ list(map(lambda x: x['text'], item['answers'])) for item in xquad_test_dataset ]
     elif test_dataset_type == 'mlqa':
@@ -329,9 +304,9 @@ def main(args):
             'test': json.load(open(os.path.join(mlqa_xx_dir, 'test.json')))['data']
         }
         mlqa_test_dataset = mlqa_xx['test']
-        _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER, args=args)
-        features = list(map(_convert_to_features, mlqa_test_dataset))
-        contexts = [item['context'] for item in mlqa_test_dataset]
+        _eval_dataset = process_squad_en(mlqa_test_dataset)
+        eval_dataset = Dataset.from_dict(dict(_eval_dataset['test']))
+
         references_lang = list(map(lambda x: x['lang'], mlqa_test_dataset))
         references = [ item['answers']['text'] for item in mlqa_test_dataset ]
     elif test_dataset_type == 'xorqa':
@@ -339,9 +314,9 @@ def main(args):
             'test': json.load(open(os.path.join(xorqa_xx_dir, 'test.json')))['data']
         }
         xorqa_test_dataset = xorqa_xx['test']
-        _convert_to_features = partial(convert_to_features, tokenizer=TOKENIZER)
-        features = list(map(_convert_to_features, xorqa_test_dataset))
-        contexts = [item['context'] for item in xorqa_test_dataset]
+        _eval_dataset = process_squad_en(xorqa_test_dataset)
+        eval_dataset = Dataset.from_dict(dict(_eval_dataset['test']))
+
         references_lang = list(map(lambda x: x['lang'], xorqa_test_dataset))
         references = [ item['answers']['text'] for item in xorqa_test_dataset ]
     else:
@@ -380,12 +355,12 @@ def main(args):
         predictions = []
 
 
-        for i in tqdm(range(0, len(squad_en_val_dataset) // batch_size)):
+        for i in tqdm(range(0, len(eval_dataset) // batch_size)):
             
             start_idx = i * batch_size
             end_idx = (i + 1) * batch_size
-            question = squad_en_val_dataset['question'][start_idx:end_idx]
-            context = squad_en_val_dataset['context'][start_idx:end_idx]
+            question = eval_dataset['question'][start_idx:end_idx]
+            context = eval_dataset['context'][start_idx:end_idx]
             # breakpoint()
             prediction = qa_pipeline(question=question,
                                      context=context,
