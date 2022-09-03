@@ -284,7 +284,7 @@ def main(args):
         }
         squad_en_test_dataset = squad_en['validation']
 
-        _eval_dataset = process_squad(squad_en_test_dataset, split_names=squad_en.keys())
+        _eval_dataset = process_squad(squad_en, split_names=squad_en.keys())
         eval_dataset = Dataset.from_dict(dict(_eval_dataset['validation']))
         references = [item['answers'] for item in squad_en_test_dataset]
      
@@ -294,7 +294,7 @@ def main(args):
         }
    
         xquad_test_dataset = squad_xx['test']
-        _eval_dataset = process_squad(xquad_test_dataset, split_names=squad_xx.keys())
+        _eval_dataset = process_squad(squad_xx, split_names=squad_xx.keys())
         eval_dataset = Dataset.from_dict(dict(_eval_dataset['test']))
         
         references_lang = list(map(lambda x: x['lang'], xquad_test_dataset))
@@ -304,7 +304,7 @@ def main(args):
             'test': json.load(open(os.path.join(mlqa_xx_dir, 'test.json')))['data']
         }
         mlqa_test_dataset = mlqa_xx['test']
-        _eval_dataset = process_squad(mlqa_test_dataset, split_names=mlqa_xx.keys())
+        _eval_dataset = process_squad(mlqa_xx, split_names=mlqa_xx.keys())
         eval_dataset = Dataset.from_dict(dict(_eval_dataset['test']))
 
         references_lang = list(map(lambda x: x['lang'], mlqa_test_dataset))
@@ -314,7 +314,7 @@ def main(args):
             'test': json.load(open(os.path.join(xorqa_xx_dir, 'test.json')))['data']
         }
         xorqa_test_dataset = xorqa_xx['test']
-        _eval_dataset = process_squad(xorqa_test_dataset, split_names=xorqa_xx.keys())
+        _eval_dataset = process_squad(xorqa_xx, split_names=xorqa_xx.keys())
         eval_dataset = Dataset.from_dict(dict(_eval_dataset['test']))
 
         references_lang = list(map(lambda x: x['lang'], xorqa_test_dataset))
