@@ -285,7 +285,7 @@ def main(args):
  
         _eval_dataset = process_squad(squad_en, split_names=squad_en.keys())
         eval_dataset = Dataset.from_dict(dict(_eval_dataset['validation']))
-        references = [ item['answers'] for item in _eval_dataset['validation'] ]
+        references = _eval_dataset['validation']['answers']
      
     elif test_dataset_type == 'xquad':
         squad_xx = { 
