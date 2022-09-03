@@ -382,8 +382,8 @@ def main(args):
         })
 
         if references_lang is not None:
-            print(f'DEBUG: len(references , predictions, references_lang): {references}, {predictions}, {references_lang}')
-            
+            print(f'DEBUG: len(references , predictions, references_lang): {len(references)}, {len(predictions)}, {len(references_lang)}')
+
             per_lang_per_example_scores.append(per_example_evaluate_with_lang(references, predictions, references_lang))
             per_lang_eval_results = evaluate_with_lang(references, predictions, references_lang)
             print(f'\nDEBUG: per_lang_eval_results: {per_lang_eval_results}\n')
