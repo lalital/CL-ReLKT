@@ -282,11 +282,10 @@ def main(args):
             'train': json.load(open(os.path.join(squad_en_dir, 'train-v1.1.json')))['data'],
             'validation': json.load(open(os.path.join(squad_en_dir, 'dev-v1.1.json')))['data']
         }
-        squad_en_test_dataset = squad_en['validation']
-
+ 
         _eval_dataset = process_squad(squad_en, split_names=squad_en.keys())
         eval_dataset = Dataset.from_dict(dict(_eval_dataset['validation']))
-        references = [item['answers'] for item in squad_en_test_dataset]
+        references = [ item['answers'] for item in _eval_dataset['validation'] ]
      
     elif test_dataset_type == 'xquad':
         squad_xx = { 
