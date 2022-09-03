@@ -284,7 +284,7 @@ def main(args):
         }
         squad_en_test_dataset = squad_en['validation']
 
-        _eval_dataset = process_squad_en(squad_en)
+        _eval_dataset = process_squad_en(squad_en_test_dataset)
         eval_dataset = Dataset.from_dict(dict(_eval_dataset['validation']))
         references = [item['answers'] for item in squad_en_test_dataset]
      
@@ -294,7 +294,7 @@ def main(args):
         }
    
         xquad_test_dataset = squad_xx['test']
-        _eval_dataset = process_squad_en(squad_xx)
+        _eval_dataset = process_squad_en(xquad_test_dataset)
         eval_dataset = Dataset.from_dict(dict(_eval_dataset['test']))
         
         references_lang = list(map(lambda x: x['lang'], xquad_test_dataset))
