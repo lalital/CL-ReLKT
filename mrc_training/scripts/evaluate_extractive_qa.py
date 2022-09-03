@@ -294,7 +294,7 @@ def main(args):
    
         xquad_test_dataset = squad_xx['test']
         # _eval_dataset = process_squad(squad_xx, split_names=squad_xx.keys())
-        eval_dataset = Dataset.from_dict(xquad_test_dataset)
+        eval_dataset = Dataset.from_dict(pd.DataFrame.from_dict(xquad_test_dataset)))
         
         references_lang = list(map(lambda x: x['lang'], xquad_test_dataset))
         references = [ list(map(lambda x: x['text'], item['answers'])) for item in xquad_test_dataset ]
@@ -304,7 +304,7 @@ def main(args):
         }
         mlqa_test_dataset = mlqa_xx['test']
         # _eval_dataset = process_squad(mlqa_xx, split_names=mlqa_xx.keys())
-        eval_dataset = Dataset.from_dict(mlqa_test_dataset)
+        eval_dataset = Dataset.from_dict(pd.DataFrame.from_dict(mlqa_test_dataset)))
 
         references_lang = list(map(lambda x: x['lang'], mlqa_test_dataset))
         references = [ item['answers']['text'] for item in mlqa_test_dataset ]
@@ -314,7 +314,7 @@ def main(args):
         }
         xorqa_test_dataset = xorqa_xx['test']
         # _eval_dataset = process_squad(xorqa_xx, split_names=xorqa_xx.keys())
-        eval_dataset = Dataset.from_dict(xorqa_test_dataset)
+        eval_dataset = Dataset.from_dict(pd.DataFrame.from_dict(xorqa_test_dataset)))
 
         references_lang = list(map(lambda x: x['lang'], xorqa_test_dataset))
         references = [ item['answers']['text'] for item in xorqa_test_dataset ]
