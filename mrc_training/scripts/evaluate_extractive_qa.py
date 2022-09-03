@@ -354,7 +354,7 @@ def main(args):
         predictions = []
 
 
-        for i in tqdm(range(0, len(eval_dataset) // batch_size)):
+        for i in tqdm(range(0, math.ceil(len(eval_dataset) / batch_size))):
             
             start_idx = i * batch_size
             end_idx = (i + 1) * batch_size
